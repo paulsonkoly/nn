@@ -1,10 +1,13 @@
 class Image
+  # @private
   module Reader
     class Reader
       def initialize(filename)
         @filename = filename
       end
 
+      # Forwards the header block DSL to BinData record definition. Use this in
+      # the sub classes to specify the file header layout.
       def self.header(&block)
         raise ArgumentError unless block_given?
 
