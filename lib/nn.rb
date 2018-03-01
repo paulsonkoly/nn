@@ -1,6 +1,5 @@
 require "nn/version"
-
-require 'nmatrix'
+require 'matrix_shim'
 
 module Nn
   class Network
@@ -8,8 +7,8 @@ module Nn
     def initialize(*sizes)
       @num_layers = sizes.length
       @sizes = sizes
-      @biases = sizes[1..-1].map { |s| NMatrix.random([s, 1]) }
-      @weights = sizes.each_cons(2).map { |a, b| NMatrix.random([b, a]) }
+      @biases = sizes[1..-1].map { |s| Matrix.random([s, 1]) }
+      @weights = sizes.each_cons(2).map { |a, b| Matrix.random([b, a]) }
     end
 
     # Calculates the result of the neural network
@@ -18,7 +17,6 @@ module Nn
     # @return [Nmatrix[Numeric]] The network output.
     def feed_forward(input)
       @biases.zip(@weights).each do |b, w|
-        pp w: w.shape, input: input.shape
         input = w.dot(input) + b
         input = input.map(&method(:sigmoid))
       end
@@ -68,8 +66,8 @@ module Nn
     # @param mini_batch A list of tuples "(x, y)"
     # @param eta The learning rate.
     def update_mini_batch(mini_batch, eta)
-      nabla_b = @biases.map { |b| NMatrix.zeros(b.shape) }
-      nabla_w = @weights.map { |w| NMatrix.zeros(w.shape) }
+      nabla_b = @biases.map { |b| Matrix.zeros(b.shape) }
+      nabla_w = @weights.map { |w| Matrix.zeros(w.shape) }
       eta = eta / mini_batch.length
 
       mini_batch.each do |(input, value)|
@@ -88,8 +86,8 @@ module Nn
     # @param value The expected result
     # @return Pair of bias, weight gradient vectors
     def backprop(input, value)
-      nabla_b = @biases.map { |b| NMatrix.zeros(b.shape) }
-      nabla_w = @weights.map { |w| NMatrix.zeros(w.shape) }
+      nabla_b = @biases.map { |b| Matrix.zeros(b.shape) }
+      nabla_w = @weights.map { |w| Matrix.zeros(w.shape) }
 
       # feedforward
       activation = input
