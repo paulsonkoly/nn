@@ -9,8 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Paul Sonkoly"]
   spec.email         = ["sonkoly.pal@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{Neural Network Library / Exercise implementation}
+  spec.description   = %q{Implementing neural networks, to recognize the MINST
+  data set following the online book from
+  http://neuralnetworksanddeeplearning.com. }
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
@@ -33,4 +35,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.16"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
+  spec.add_runtime_dependency 'bindata', '~> 2.4.0'
+  spec.add_runtime_dependency 'nmatrix', '~> 0.2'
 end
