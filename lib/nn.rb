@@ -1,5 +1,6 @@
 require "nn/version"
 require 'matrix_shim'
+require 'ruby-progressbar'
 
 module Nn
   class Network
@@ -38,13 +39,14 @@ module Nn
     def sgd(training_data, epochs, mini_batch_size, eta, test_data = nil)
       epochs.times do |epoch|
         training_data.shuffle!
+        bar = ProgressBar.create format: "Epoch #{epoch} |%B| %p%"
+        bar.total = training_data.count
         training_data.each_slice(mini_batch_size) do |mini_batch|
           update_mini_batch(mini_batch, eta)
-          if test_data
-            p "Epoch #{epoch}: #{evaluate(test_data)} / #{test_data.length}"
-          else
-            p "Epoch #{epoch} complete"
-          end
+          bar.progress += mini_batch_size
+        end
+        if test_data
+          p "Epoch #{epoch}: #{evaluate(test_data)} / #{test_data.length}"
         end
       end
     end
