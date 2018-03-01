@@ -80,7 +80,7 @@ module Nn
       end
 
       @weights.map!.with_index { |w, ix| w - nabla_w[ix] * eta }
-      @biases.map!.with_index { |b, ix| b - nabla_w[ix] * eta }
+      @biases.map!.with_index { |b, ix| b - nabla_b[ix] * eta }
     end
 
     # The gradient of the cost function
@@ -98,12 +98,13 @@ module Nn
       @biases.zip(@weights) do |b, w|
         z = w.dot(activation) + b
         zs << (z)
-        activation = sigmoid(z)
+        activation = z.map(&method(:sigmoid))
         activations << activation
       end
 
       # backward pass
-      delta = cost_derivative(activations[-1], value) * sigmoid_prime(zs[-1])
+      delta = cost_derivative(activations[-1], value) *
+        zs[-1].map(&method(:sigmoid_prime))
       nabla_b[-1] = delta
       nabla_w[-1] = delta.dot(activations[-2].transpose)
       # Note that the variable l in the loop below is used a little
@@ -112,12 +113,12 @@ module Nn
       # second-last layer, and so on.  It's a renumbering of the
       # scheme in the book, used here to take advantage of the fact
       # that Python can use negative indices in lists.
-      (2.upto(@num_layers)).each do |ix|
+      (2...@num_layers).each do |ix|
         z = zs[-ix]
-        sp = sigmoid_prime(z)
+        sp = z.map(&method(:sigmoid_prime))
         delta = @weights[-ix+1].transpose.dot(delta) * sp
         nabla_b[-ix] = delta
-        nabla_w[-ix] = delta.dot(activations[-l-1].transpose())
+        nabla_w[-ix] = delta.dot(activations[-ix-1].transpose())
       end
       [ nabla_b, nabla_w ]
     end
@@ -129,7 +130,7 @@ module Nn
     # activation.
     def evaluate(test_data)
       test_data.count do |input, value|
-        a = feedforward(input).to_a
+        a = feed_forward(input).to_a
         a.each_with_index.max[1] == value
       end
     end
