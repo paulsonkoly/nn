@@ -25,12 +25,13 @@ module Nn
       bar = ProgressBar.create format: "Epoch #{@epoch} |%B| %p%"
       bar.total = @total_size
       future = nil
-      0.step(@total_size, @batch_size) do |progress|
+      0.step(to: @total_size - @batch_size, by: @batch_size) do |progress|
         data = load_up(progress)
         future.wait if future
         future = Concurrent::Future.execute { yield(data) }
         bar.progress = progress
       end
+      bar.finish
       @epoch += 1
     end
 
