@@ -15,8 +15,10 @@ bar.total = 50_000
   image = Image.read_from_files(datafile: 'train-images-idx3-ubyte',
                                 labelfile: 'train-labels-idx1-ubyte',
                                 offset: offset)
+  v = Array.new(10) { 0 }
+  v[image.value] = 1.0
   bar.increment
-  [Nn::Matrix.new(image.data), image.value]
+  [Nn::Matrix.new(image.data), Nn::Matrix.new(v)]
 end
 
 bar = ProgressBar.create format: "Loading test data |%B| %p%"
@@ -30,8 +32,8 @@ bar.total = 10_000
 end
 
 @net = Nn::Network.new(784, 30, 10)
-pp "set variables are: @net, @training_data, @test_data"
-pp "run @net.sgd(@training_data, 30, 10, 3.0, @test_data)"
+p "set variables are: @net, @training_data, @test_data"
+p "run @net.sgd(@training_data, 30, 10, 3.0, @test_data)"
 
 @net.sgd(@training_data, 30, 10, 3.0, @test_data)
 
