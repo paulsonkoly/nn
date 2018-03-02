@@ -40,6 +40,7 @@ module Nn
       epochs.times do |epoch|
         loader.shuffle!
         loader.each { |mini_batch| update_mini_batch(mini_batch, eta) }
+        p loader.stats
         if test_data
           p "Epoch #{epoch}: #{evaluate(test_data)} / #{test_data.length}"
         end
