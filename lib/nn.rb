@@ -1,5 +1,5 @@
 require "nn/version"
-require 'matrix_shim'
+require 'matrix/matrix_stdlib'
 require 'ruby-progressbar'
 
 module Nn
