@@ -39,4 +39,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'bindata', '~> 2.4.0'
 #  spec.add_runtime_dependency 'nmatrix', '~> 0.2'
   spec.add_runtime_dependency 'ruby-progressbar'
+  spec.add_runtime_dependency 'concurrent-ruby', '~> 1.0'
 end

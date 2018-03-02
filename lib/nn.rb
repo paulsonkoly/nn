@@ -36,15 +36,10 @@ module Nn
     # network will be evaluated against the test data after each epoch, and
     # partial progress printed out. This is useful for tracking progress, but
     # slows things down substantially.
-    def sgd(training_data, epochs, mini_batch_size, eta, test_data = nil)
+    def sgd(loader, epochs, eta, test_data = nil)
       epochs.times do |epoch|
-        training_data.shuffle!
-        bar = ProgressBar.create format: "Epoch #{epoch} |%B| %p%"
-        bar.total = training_data.count
-        training_data.each_slice(mini_batch_size) do |mini_batch|
-          update_mini_batch(mini_batch, eta)
-          bar.progress += mini_batch_size
-        end
+        loader.shuffle!
+        loader.each { |mini_batch| update_mini_batch(mini_batch, eta) }
         if test_data
           p "Epoch #{epoch}: #{evaluate(test_data)} / #{test_data.length}"
         end

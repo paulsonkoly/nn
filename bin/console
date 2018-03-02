@@ -4,22 +4,16 @@ require "bundler/setup"
 require "nn"
 require 'image'
 require 'matrix/matrix_stdlib'
+require 'loader'
 require 'ruby-progressbar'
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
 
-bar = ProgressBar.create format: "Loading training set |%B| %p%"
-bar.total = 50_000
-@training_data = 50_000.times.map do |offset|
-  image = Image.read_from_files(datafile: 'train-images-idx3-ubyte',
-                                labelfile: 'train-labels-idx1-ubyte',
-                                offset: offset)
-  v = Array.new(10) { 0 }
-  v[image.value] = 1.0
-  bar.increment
-  [Nn::Matrix.new(image.data), Nn::Matrix.new(v)]
-end
+@loader = Nn::Loader.new(datafile: 'train-images-idx3-ubyte',
+                        labelfile: 'train-labels-idx1-ubyte',
+                        total_size: 50_000,
+                        batch_size: 10)
 
 bar = ProgressBar.create format: "Loading test data |%B| %p%"
 bar.total = 10_000
@@ -35,7 +29,7 @@ end
 p "set variables are: @net, @training_data, @test_data"
 p "run @net.sgd(@training_data, 30, 10, 3.0, @test_data)"
 
-@net.sgd(@training_data, 30, 10, 3.0, @test_data)
+@net.sgd(@loader, 30, 300.0, @test_data)
 
 # (If you use this, don't forget to add pry to your Gemfile!)
 require "pry"
