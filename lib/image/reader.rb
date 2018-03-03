@@ -45,8 +45,9 @@ class Image
 
       def read_item(hdr, io)
         size = self.item_size(hdr)
-        BinData::Array.new(type: :uint8,
-                           read_until: -> { index + 1 == size }).read(io)
+        data = BinData::Array.new(type: :uint8,
+                                  read_until: -> { index + 1 == size }).read(io)
+        data.map { |e| e / 255.0 }
       end
     end
 
