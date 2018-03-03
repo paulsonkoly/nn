@@ -24,7 +24,7 @@ module Nn
 
     def each
       return to_enum :each unless block_given?
-      bar = ProgressBar.create format: "Epoch #{@epoch} |%B| %p%"
+      bar = ProgressBar.create format: "Epoch #{@epoch} |%B| %p% %a %e"
       bar.total = @total_size
       future = nil
       0.step(to: @total_size - @batch_size, by: @batch_size) do |progress|
