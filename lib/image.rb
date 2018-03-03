@@ -1,4 +1,3 @@
-require 'bindata'
 require_relative 'image/reader'
 
 class Image

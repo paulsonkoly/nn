@@ -26,11 +26,8 @@ module Nn
 
     # Train the neural network using mini-batch stochastic gradient descent.
     #
-    # @param training_data [Array[[input, result]] a list of tuples
-    # representing the training inputs and the desired outputs.
+    # @param loader [Nn::Loader] input data loader
     # @param epochs [Integer] Number of epochs to run.
-    # @param mini_batch_size [Integer] Size of each batch to execute gradient
-    # descent on.
     # @param eta Sampling rate.
     # @param test_data [Array[[input, result]]|nil] If provided then the
     # network will be evaluated against the test data after each epoch, and
@@ -102,12 +99,6 @@ module Nn
         zs[-1].map(&method(:sigmoid_prime))
       nabla_b[-1] = delta
       nabla_w[-1] = delta.dot(activations[-2].transpose)
-      # Note that the variable l in the loop below is used a little
-      # differently to the notation in Chapter 2 of the book.  Here,
-      # l = 1 means the last layer of neurons, l = 2 is the
-      # second-last layer, and so on.  It's a renumbering of the
-      # scheme in the book, used here to take advantage of the fact
-      # that Python can use negative indices in lists.
       (2...@num_layers).each do |ix|
         z = zs[-ix]
         sp = z.map(&method(:sigmoid_prime))

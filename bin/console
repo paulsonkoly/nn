@@ -26,10 +26,10 @@ bar.total = 10_000
 end
 
 @net = Nn::Network.new(784, 30, 10)
-p "set variables are: @net, @training_data, @test_data"
-p "run @net.sgd(@training_data, 30, 10, 3.0, @test_data)"
+p "set variables are: @net, @loader, @test_data"
+p "run @net.sgd(@loader, 30, 3.0, @test_data)"
 
-@net.sgd(@loader, 30, 300.0, @test_data)
+@net.sgd(@loader, 30, 3.0, @test_data)
 
 # (If you use this, don't forget to add pry to your Gemfile!)
 require "pry"

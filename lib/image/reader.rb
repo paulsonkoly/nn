@@ -1,3 +1,5 @@
+require 'bindata'
+
 class Image
   # @private
   module Reader
