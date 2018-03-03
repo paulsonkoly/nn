@@ -1,8 +1,6 @@
 # Nn
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/nn`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Implementing neural networks, to recognize the MINST data set following the online book from http://neuralnetworksanddeeplearning.com.
 
 ## Installation
 
@@ -22,17 +20,85 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Download the [MNIST data set](http://yann.lecun.com/exdb/mnist/) and place the following files under the project root: 'train-images-idx3-ubyte', 'train-labels-idx1-ubyte'.
 
-## Development
+You can start `bin/console` which loads the data set and predifines @net variable. An example session might look like:
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
+pry(main)> i = Image.read_from_files(datafile: 'train-images-idx3-ubyte', labelfile: 'train-labels-idx1-ubyte', offset: 57500)
+[44] pry(main)> i.data.each_slice(28) { |s| p s.map { |e| e > 0 ? 'X' : ' ' }.join }
+"                            "
+"                            "
+"                            "
+"         XXXXXX             "
+"         XXXXXXXX           "
+"         XXXXXXXXX          "
+"         XXXXXXXXXX         "
+"            XXXXXXX         "
+"               XXXXX        "
+"               XXXXX        "
+"                XXXXX       "
+"                 XXXX       "
+"                 XXXX       "
+"                  XXXX      "
+"         XXXXXXXXXXXXX      "
+"        XXXXXXXXXXXXXX      "
+"        XXXXXXXXXXXXXX      "
+"       XXXXXXXXXXXXXXX      "
+"       XXXXX   XXXXXXX      "
+"       XXXXXXXXXXXXXXX      "
+"       XXXXXXXXXXXXXXX      "
+"        XXXXXXXXXXXXXX      "
+"        XXXXXXXXX           "
+"                            "
+"                            "
+"                            "
+"                            "
+"                            "
+[44] pry(main)> i.data.each_slice(28) { |s| p s.map { |e| e > 0 ? 'X' : ' ' }.join }
+"                            "
+"                            "
+"                            "
+"         XXXXXX             "
+"         XXXXXXXX           "
+"         XXXXXXXXX          "
+"         XXXXXXXXXX         "
+"            XXXXXXX         "
+"               XXXXX        "
+"               XXXXX        "
+"                XXXXX       "
+"                 XXXX       "
+"                 XXXX       "
+"                  XXXX      "
+"         XXXXXXXXXXXXX      "
+"        XXXXXXXXXXXXXX      "
+"        XXXXXXXXXXXXXX      "
+"       XXXXXXXXXXXXXXX      "
+"       XXXXX   XXXXXXX      "
+"       XXXXXXXXXXXXXXX      "
+"       XXXXXXXXXXXXXXX      "
+"        XXXXXXXXXXXXXX      "
+"        XXXXXXXXX           "
+"                            "
+"                            "
+"                            "
+"                            "
+"                            "
+=> nil
+[45] pry(main)> @net.feed_forward(Nn::Matrix.new(i.data)).map {|e| e.round(3) }
+=> #<Nn::Matrix:0x00007f4f9c2515c8 @m=Matrix[[0.0], [0.0], [1.0], [0.001], [0.0], [0.0], [0.0], [0.0], [0.0], [0.0]]>
+[46] pry(main)> i.value
+=> 2
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+or to train the network
 
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/nn.
+```
+53] pry(main)> @net.sgd(@loader, 1, 3.0, @train_data)
+Epoch 0 |====================================| 100% Time: 01:03:21 Time: 01:03:21
+loader waited : 0, finished early : 24995
+Epoch 0: 9497 / 10000
+```
 
 ## License
 
