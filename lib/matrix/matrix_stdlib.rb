@@ -47,7 +47,7 @@ module Nn
     end
 
     def self.random(shape)
-      Matrix.new(::Matrix.build(*shape) { rand })
+      Matrix.new(::Matrix.build(*shape) { 2 * rand - 1.0 })
     end
 
     def self.zeros(shape)
