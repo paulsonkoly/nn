@@ -1,6 +1,6 @@
 # Nn
 
-Implementing neural networks, to recognize the MINST data set following the online book from http://neuralnetworksanddeeplearning.com.
+Implementing neural networks, to recognize the MNIST data set following the online book from http://neuralnetworksanddeeplearning.com.
 
 ## Installation
 
@@ -22,7 +22,7 @@ Or install it yourself as:
 
 Download the [MNIST data set](http://yann.lecun.com/exdb/mnist/) and place the following files under the project root: 'train-images-idx3-ubyte', 'train-labels-idx1-ubyte'.
 
-You can start `bin/console` which loads the data set and predifines @net variable. An example session might look like:
+You can start `bin/console` which loads the data set and predefines @net variable. An example session might look like:
 
 ```
 pry(main)> i = Image.read_from_files(datafile: 'train-images-idx3-ubyte', labelfile: 'train-labels-idx1-ubyte', offset: 57500)
