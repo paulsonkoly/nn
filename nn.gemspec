@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Implementing neural networks, to recognize the MINST
   data set following the online book from
   http://neuralnetworksanddeeplearning.com. }
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage      = "http://github.com/phaul/nn"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
